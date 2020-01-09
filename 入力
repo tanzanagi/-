@@ -1,0 +1,13 @@
+//数字１つをint型で受け取る
+s = int(input())
+
+//一行内のいくつかの数字を１つのリストにint型にして受け取る
+ls = list(map(int,input().split()))
+
+//一行内の複数の文字列を１つのリストにして受け取る
+str1 = input().split()
+
+//一行内の複数の数字をint型にして１対１対応の変数として受け取る
+a, b, c = map(int, input().split())
+
+参考：https://qiita.com/kyuna/items/8ee8916c2f4e36321a1c
