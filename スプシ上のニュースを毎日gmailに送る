@@ -1,0 +1,67 @@
+function myFunction() {
+  
+  //前処理
+    //シート上のデータ範囲の特定
+  var ss = SpreadsheetApp.openById("スプレッドシートのID");
+  var sheet = ss.getSheetByName("シート1");
+
+  var column = 6
+  var last_row = sheet.getDataRange().getLastRow();
+  //Logger.log(last_row)
+    //シート上のデータ読み込み
+  var all_datas = sheet.getRange(1,1,last_row, column + 1).getValues();
+
+  //Logger.log(all_datas)
+  //未読ニュースコンテンツを記録
+    //"○"のない行番号の内容取得
+  var articles = []
+
+  for(var i = 0 ; i <= last_row -1  ;  i++){
+
+    if(all_datas[i][6] == ""){
+      articles.push(
+        [all_datas[i][0], 
+        all_datas[i][1], 
+        all_datas[i][2],
+        all_datas[i][3]]
+        )      
+      sheet.getRange(i+1,7).setValue("○")
+      
+    } else{
+      //なし
+    }
+  }
+  
+  
+  //メール内容生成
+    //下処理
+  var len = articles.length;
+  var subject = "Startup Pickups"
+  var body = "\n";
+
+    //内容整備
+  for(var i = 0; i <= len - 1 ; i++){
+ 
+    var partial_body = ""
+    partial_body = i + 1 + "." +  articles[i][1].replace("<b>", "").replace("</b>","")
+    partial_body += "\n"
+    partial_body += articles[i][0]
+    partial_body += "\n"
+    partial_body += articles[i][3].replace("<b>", "").replace("</b>","")
+    partial_body += "\n" 
+    partial_body += articles[i][2]
+    partial_body += "\n"
+
+    body += partial_body 
+    body += "\n"
+  }
+
+  body += "シートのURL"
+
+//メール送信
+  GmailApp.sendEmail(
+    "メアド@gmail.com",
+    subject,
+    body, 
+  )    
+}
